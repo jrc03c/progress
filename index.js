@@ -33,10 +33,17 @@ class Progress extends Array {
     return undefined
   }
 
-  // map(fn, otherThis) {
-  //   const self = this[0]
-  //   return super.map(fn, otherThis)
-  // }
+  map(fn, otherThis) {
+    const self = this
+    const out = []
+    const boundFn = fn.bind(otherThis || self[0])
+
+    self.forEach((v, i, arr) => {
+      out.push(boundFn(v, i, arr))
+    })
+
+    return out
+  }
 
   // filter(fn) {
   //   const self = this[0]
