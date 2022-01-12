@@ -45,25 +45,30 @@ class Progress extends Array {
     return out
   }
 
-  // filter(fn) {
-  //   const self = this[0]
-  //   return super.filter(fn)
-  // }
+  filter(fn, otherThis) {
+    const self = this
+    const out = []
+    const boundFn = fn.bind(otherThis || self[0])
 
-  // reduce(fn, initialValue) {
-  //   const self = this[0]
-  //   return super.reduce(fn, initialValue)
-  // }
+    self.forEach((v, i, arr) => {
+      if (boundFn(v, i, arr)) {
+        out.push(v)
+      }
+    })
 
-  // every(fn, otherThis) {
-  //   const self = this[0]
-  //   return super.every(fn, otherThis)
-  // }
+    return out
+  }
 
-  // some(fn, otherThis) {
-  //   const self = this[0]
-  //   return super.some(fn, otherThis)
-  // }
+  reduce(fn, initialValue) {
+    const self = this[0]
+    let out = initialValue || self[0]
+
+    self.slice(initialValue ? 0 : 1).forEach((v, i, arr) => {
+      out = fn(out, v)
+    })
+
+    return out
+  }
 }
 
 function progress(arr) {
