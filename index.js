@@ -11,8 +11,8 @@ function repeat(text, n) {
 }
 
 class Progress extends Array {
-  async forEach(fn, otherThis) {
-    const self = this[0]
+  forEach(fn, otherThis) {
+    const self = this
 
     for (let i = 0; i < self.length; i++) {
       const boundFn = fn.bind(otherThis || self)
@@ -36,7 +36,7 @@ class Progress extends Array {
   map(fn, otherThis) {
     const self = this
     const out = []
-    const boundFn = fn.bind(otherThis || self[0])
+    const boundFn = fn.bind(otherThis || self)
 
     self.forEach((v, i, arr) => {
       out.push(boundFn(v, i, arr))
@@ -48,7 +48,7 @@ class Progress extends Array {
   filter(fn, otherThis) {
     const self = this
     const out = []
-    const boundFn = fn.bind(otherThis || self[0])
+    const boundFn = fn.bind(otherThis || self)
 
     self.forEach((v, i, arr) => {
       if (boundFn(v, i, arr)) {
@@ -60,7 +60,7 @@ class Progress extends Array {
   }
 
   reduce(fn, initialValue) {
-    const self = this[0]
+    const self = this
     let out = initialValue || self[0]
 
     self.slice(initialValue ? 0 : 1).forEach((v, i, arr) => {
@@ -72,5 +72,7 @@ class Progress extends Array {
 }
 
 function progress(arr) {
-  return new Progress(arr)
+  return new Progress(...arr)
 }
+
+module.exports = progress
