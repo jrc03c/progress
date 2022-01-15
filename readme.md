@@ -1,4 +1,4 @@
-**progress** is a little package that draws a progress bar when iterating over an array in Node.
+**progress** is a little package that draws a progress bar when iterating over an array in Node. It's kind of like [tqdm](https://tqdm.github.io/).
 
 Install it:
 
