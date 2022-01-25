@@ -72,7 +72,7 @@ class Progress extends Array {
 }
 
 function progress(arr) {
-  return new Progress(...arr)
+  return Progress.from(arr)
 }
 
 module.exports = progress
