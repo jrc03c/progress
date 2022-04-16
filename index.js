@@ -11,24 +11,40 @@ function repeat(text, n) {
 }
 
 class Progress extends Array {
+  static drawBar(i, n) {
+    const isAPercent = typeof n === "undefined"
+    i = isAPercent ? Math.round(100 * i) : i
+    n = isAPercent ? 100 : n
+
+    if (i < 0) {
+      throw new Error("The progress bar value can't be less than 0%!")
+    }
+
+    if (i > n) {
+      throw new Error("The progress bar value can't be greater than 100%!")
+    }
+
+    const right = isAPercent ? ` (${i}%)` : ` (${i} / ${n})`
+    const percent = i / n
+    const remainingColumns = process.stdout.columns - right.length
+    const done = parseInt(percent * remainingColumns)
+    const notDone = remainingColumns - done
+
+    readline.clearLine(process.stdout, 0)
+    readline.cursorTo(process.stdout, 0, null)
+    process.stdout.write(repeat("█", done) + repeat("░", notDone) + right)
+  }
+
   forEach(fn, otherThis) {
     const self = this
 
     for (let i = 0; i < self.length; i++) {
       const boundFn = fn.bind(otherThis || self)
       boundFn(self[i], i, self)
-
-      const right = ` (${i + 1} / ${self.length})`
-      const percent = (i + 1) / self.length
-      const remainingColumns = process.stdout.columns - right.length
-      const done = parseInt(percent * remainingColumns)
-      const notDone = remainingColumns - done
-
-      readline.clearLine(process.stdout, 0)
-      readline.cursorTo(process.stdout, 0, null)
-      process.stdout.write(repeat("█", done) + repeat("░", notDone) + right)
+      Progress.drawBar(i, self.length)
     }
 
+    Progress.drawBar(self.length, self.length)
     process.stdout.write("\n")
     return undefined
   }
@@ -71,8 +87,18 @@ class Progress extends Array {
   }
 }
 
-function progress(arr) {
-  return Progress.from(arr)
+function progress(x, y) {
+  if (x instanceof Array) {
+    return Progress.from(x)
+  }
+
+  if (typeof x === "number") {
+    return Progress.drawBar(x, y)
+  }
+
+  throw new Error(
+    "You must pass either (1) an array or (2) one or two numbers into the `progress` function!"
+  )
 }
 
 module.exports = progress
