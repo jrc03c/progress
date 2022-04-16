@@ -20,3 +20,10 @@ progress(x).forEach(value => {
   // terminal!
 })
 ```
+
+You can also set the progress bar value manually by passing either a fraction from 0 to 1 _or_ a numerator and denominator:
+
+```js
+progress(0.5) // 50%
+progress(30, 60) // 50%
+```
