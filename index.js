@@ -33,6 +33,10 @@ class Progress extends Array {
     // readline.clearLine(process.stdout, 0)
     readline.cursorTo(process.stdout, 0, null)
     process.stdout.write(repeat("█", done) + repeat("░", notDone) + right)
+
+    if (percent === 1) {
+      process.stdout.write("\n")
+    }
   }
 
   forEach(fn, otherThis) {
