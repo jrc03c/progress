@@ -30,13 +30,12 @@ class Progress extends Array {
     const done = parseInt(percent * remainingColumns)
     const notDone = remainingColumns - done
 
-    // readline.clearLine(process.stdout, 0)
+    if (percent === 1) {
+      readline.clearLine(process.stdout, 0)
+    }
+
     readline.cursorTo(process.stdout, 0, null)
     process.stdout.write(repeat("█", done) + repeat("░", notDone) + right)
-
-    if (percent === 1) {
-      process.stdout.write("\n")
-    }
   }
 
   forEach(fn, otherThis) {
